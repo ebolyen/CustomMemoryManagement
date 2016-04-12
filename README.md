@@ -1,9 +1,7 @@
 # CustomerMemoryManagement
 Team members: (Mike, Evan, Justin, Antonio)
 
-#Project Description
-
-##Project Intro:
+##Project Description:
 High throughput sequencing (HTS) technologies like Illumina’s GAIIx and HiSeq, allow generation of billions of bases of sequencing data in a matter of days. This explosion of data has opened a number of new research directions, but the sheer amount of data greatly strains our typical character processing algorithms and data structures.  While the amount of sequence data we can generate has been increasing exponentially over the last few years, increases in availability of addressable RAM have not kept the pace. In particular, 64-bit pointer architectures are capable of addressing much more RAM than what is typically available on today’s machines (even high performance clusters), wasting significant space in pointer-heavy data structures. One such data structure is a prefix trie. Here, the cost of keeping multiple pointers within each node of the trie makes it cost-prohibitive when trying contain read sets consisting of millions to billions of unique sequence fragments. Your goal will be to create and implement a custom memory management tool / class / layer that will be able to translate 64-bit pointers into pointers of arbitrary (used defined size). 
 Inputs:
 -	High Throughput Sequencing (HTS) reads from real deep-sequencing experiments. You will be required to test your pipeline on multiple read sets (provided by instructor) ranging in size from 1 million 50-mers to 100 million 50 mers.
