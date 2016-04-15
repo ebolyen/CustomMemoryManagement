@@ -8,9 +8,11 @@ Inputs:
 
 -High Throughput Sequencing (HTS) reads from real deep-sequencing experiments. You will be required to test your pipeline on multiple read sets (provided by instructor) ranging in size from 1 million 50-mers to 100 million 50 mers.
 
+
 Goals:
 
 -Design and implement a custom memory management tool / class / layer to translate 64 bit pointers into pointers of arbitrary (pre-specified) size.
+
 
 Additional requirements:
 
