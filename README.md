@@ -1,4 +1,4 @@
-# CustomerMemoryManagement
+# Custom Memory Management
 Team members: (Mike, Evan, Nakai, Justin, Antonio)
 
 ##Project Description:
