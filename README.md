@@ -1,4 +1,4 @@
-# CustomerMemoryManagement
+# CustomMemoryManagement
 
 Custom memory management
 Project Intro:
