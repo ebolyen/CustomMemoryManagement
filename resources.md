@@ -13,3 +13,5 @@ We will overide new and delete for the smart pointer class?
 [Pragma, Type Ordering, and char Arrays](http://stackoverflow.com/questions/4301759/disable-structure-padding-in-c-without-using-pragma)
 
 [Smart Pointers in c++](https://msdn.microsoft.com/en-us/library/hh279674.aspx)
+
+[Building your own memory manager for C/C++ projects](https://www6.software.ibm.com/developerworks/education/au-memorymanager/au-memorymanager-pdf.pdf)
