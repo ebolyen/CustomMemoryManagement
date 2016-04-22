@@ -4,7 +4,8 @@
 // Project Specific
 #include "compactPointer.h"
 #include "trie.h"
-#include
+
+using namespace std;
 
 struct record{
     string header;
@@ -25,20 +26,20 @@ record get_record(ifstream& ifs){
 
 
 int main(int argc, char **argv) {
-    std::cout << "Test Smart gitPointer to Trie" << "\n";
+    cout << "Test Smart gitPointer to Trie" << "\n";
 
     CompactPointer<Trie> prefix = new Trie();
-    std::cout << "Pointer size: " << sizeof(&prefix) << "\n";;
+    cout << "Pointer size: " << sizeof(&prefix) << "\n";;
 
     ifstream ifs;
     ifs.open ("test_in.fasta", ifstream::in);
 
     record this_record;
     char x;
-    while( ifs.get(x)) {
+    while( ifs.get(x)) {        // This is not working
         this_record = get_record(ifs);
         prefix->add(this_record.sequence);
-        std::cout << "Prefix Length: " << prefix->get_size() << "\n";
+        cout << "Prefix Length: " << prefix->get_size() << "\n";
     }
 
     ifs.close();

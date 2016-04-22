@@ -4,7 +4,7 @@
 
 #include "trie.h"
 
-using namespace std
+using namespace std;
 
 Node::Node() {
     _value = ' ';
