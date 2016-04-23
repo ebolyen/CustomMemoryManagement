@@ -4,6 +4,8 @@
 
 #include "trie.h"
 
+using namespace std;
+
 Node::Node() {
     _value = ' ';
 }
@@ -48,7 +50,7 @@ Trie::~Trie(void) {
     delete _root;
 }
 
-void Trie::add(std::string word) {
+void Trie::add(string word) {
     Node *current = _root;
 
     if (word.length() == 0) {
@@ -72,7 +74,7 @@ void Trie::add(std::string word) {
     }
 }
 
-bool Trie::search(std::string word) {
+bool Trie::search(string word) {
     Node *current = _root;
 
     for (int i = 0; i < word.length(); i++) {
