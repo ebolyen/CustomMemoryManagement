@@ -10,6 +10,7 @@ TARGET := bin/thing
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
+	mkdir -p bin
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) -o $(TARGET)
 
 %.o: %.cpp
