@@ -7,11 +7,13 @@
 
 using namespace std;
 
+
 // stores one header and one sequence each can be up to 80 cahracters long
 struct record{
     string header;
     string sequence;
 };
+
 
 // retrieves a single record (header, sequence) from FASTA file
 record get_record(ifstream& ifs){
