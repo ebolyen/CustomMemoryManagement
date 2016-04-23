@@ -7,7 +7,7 @@
 using namespace std;
 
 
-int Memmg::get_block_size(int bytes_in_struct) {
+int get_block_size(int bytes_in_struct) {
     /***Finds lowest common multiple of `bytes_in_struct` and `bytes_from_os`
 
      Parameters
@@ -39,12 +39,14 @@ int Memmg::get_block_size(int bytes_in_struct) {
 }
 
 
-int Memmg::get_size_of_os_pointer(){
+int get_size_of_os_pointer(){
     return sizeof(void*);
 }
 
 
-void * Memmg::get_new_block(){
+void get_new_block(){
+
+    new_block * = *malloc(Memmg->get_block_size(bytes_in_struct))
 
     blocks.push_back (new_block);   // adds new_block to end of vector
 }
