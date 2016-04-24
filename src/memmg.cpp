@@ -1,3 +1,5 @@
+#define ONE_BYTE = 1
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,6 +8,7 @@
 
 using namespace std;
 
+vector<void *> blocks;
 
 int get_block_size(int bytes_in_struct) {
     /***Finds lowest common multiple of `bytes_in_struct` and `bytes_from_os`
@@ -46,7 +49,7 @@ int get_size_of_os_pointer(){
 
 void get_new_block(){
 
-    new_block * = *malloc(Memmg->get_block_size(bytes_in_struct))
+    new_block * = calloc(ONE_BYTE, get_block_size(MEMMG_WIDTH * 4))
 
     blocks.push_back (new_block);   // adds new_block to end of vector
 }
