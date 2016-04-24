@@ -1,3 +1,8 @@
+// #define MEMMG_WIDTH 5
+// #define MEMMG_TYPE Node
+// #include "memmg.h"
+
+
 #include <iostream>
 #include <fstream>
 
