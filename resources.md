@@ -2,6 +2,8 @@
 #Strategy
 Using a compile time flag we will allow the user to set the address space that they want their smart pointers to use. This define will set up the allocator to use on the smart pointer and the custom allocator will be some particular implementation.
 
+The memory manager will hold a vector of pointers to the blocks of memory we have received from the OS.
+
 A library that will be included in a header file. 
 
 We will provide a base class with the smart pointer for the user to use.
