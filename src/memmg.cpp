@@ -41,15 +41,37 @@ int get_block_size(int bytes_in_struct) {
     return lcm;
 }
 
+void *memmg_alloc() {
+    // Allocate a space for a struct, returning the hardware address.
+}
 
-int get_size_of_os_pointer(){
-    return sizeof(void*);
+int64_t memmg_to_virtual(MEMMG_TYPE *ptr) {
+    // Convert a hardware address to a virtual address.
+}
+
+MEMMG_TYPE *memmg_reference(char *small_pointer) {
+    // convert the virtual pointer into a reference, use MEMMG_WIDTH to
+    // determine how far to read in the small_pointer.
 }
 
 
-void get_new_block(){
+class MemmgPointer {
+public:
+    MemmgPointer(MEMMG_TYPE *ptr) {
+        int64_t virtual_address;
+        _pointer = (char *) malloc(MEMMG_WIDTH);
+        virtual_address = memmg_to_virtual(ptr);
+        // do some bitmasking here to apply the virtual_address to the _pointer
+        // array
+    }
 
-    new_block * = calloc(ONE_BYTE, get_block_size(MEMMG_WIDTH * 4))
+    MEMMG_TYPE &operator* () {
+        return *memmg_reference(_pointer);
+    }
 
-    blocks.push_back (new_block);   // adds new_block to end of vector
-}
+    MEMMG_TYPE *operator-> () {
+        return memmg_reference(_pointer);
+    }
+private:
+    char[MEMMG_WIDTH] _pointer;
+};
