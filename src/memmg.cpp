@@ -41,6 +41,18 @@ int get_block_size(int bytes_in_struct) {
     return lcm;
 }
 
+int get_size_of_os_pointer(){
+    return sizeof(void*);
+}
+
+
+void get_new_block(){
+
+    new_block * = calloc(ONE_BYTE, get_block_size(MEMMG_WIDTH * 4))
+
+    blocks.push_back (new_block);   // adds new_block to end of vector
+}
+
 void *memmg_alloc() {
     // Allocate a space for a struct, returning the hardware address.
 }
