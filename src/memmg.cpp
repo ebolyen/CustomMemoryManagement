@@ -25,7 +25,7 @@ int get_block_size(int bytes_in_struct) {
           lowest common multiple of `bytes_in_struct` and `bytes_from_os`
     ***/
 
-    int bytes_from_os = Memmg->get_size_of_os_pointer();
+    int bytes_from_os = get_size_of_os_pointer();
     int lcm = (bytes_in_struct > bytes_from_os) ? bytes_in_struct : bytes_from_os;
 
     do {
@@ -51,7 +51,7 @@ void get_new_block(){
         Gets a number of bytes from OS that will be used a block of nodes
         in virtual memory space. Then adds a pointer to that block to the
         vector of block pointers virtual_memory_blocks.
-        
+
     ***/
     new_block * = malloc(get_block_size(MEMMG_WIDTH * 4))
 
