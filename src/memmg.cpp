@@ -1,5 +1,3 @@
-#define ONE_BYTE = 1
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,7 +6,8 @@
 
 using namespace std;
 
-vector<void *> blocks;
+const vector<void *> virtual_memory_blocks;
+int free_block_position = 0;
 
 int get_block_size(int bytes_in_struct) {
     /***Finds lowest common multiple of `bytes_in_struct` and `bytes_from_os`
@@ -47,10 +46,16 @@ int get_size_of_os_pointer(){
 
 
 void get_new_block(){
+    /***
 
-    new_block * = calloc(ONE_BYTE, get_block_size(MEMMG_WIDTH * 4))
+        Gets a number of bytes from OS that will be used a block of nodes
+        in virtual memory space. Then adds a pointer to that block to the
+        vector of block pointers virtual_memory_blocks.
+        
+    ***/
+    new_block * = malloc(get_block_size(MEMMG_WIDTH * 4))
 
-    blocks.push_back (new_block);   // adds new_block to end of vector
+    virtual_memory_blocks.push_back (new_block);   // adds new_block to end of vector
 }
 
 void *memmg_alloc() {
