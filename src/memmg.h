@@ -6,6 +6,9 @@
  * instead place it directly in any structs.
  */
 
+#include "definitions.h"
+
+
 void * memmg_alloc();
 
 class MemmgPointer {
