@@ -10,6 +10,10 @@ We will provide a base class with the smart pointer for the user to use.
 
 We will overide new and delete for the smart pointer class?
 
+Using Catch for unit testing
+
+[Catch](https://github.com/philsquared/Catch)
+
 [The Lost Art of C Structure Packing](http://www.catb.org/esr/structure-packing/#_bitfields)
 
 [Pragma, Type Ordering, and char Arrays](http://stackoverflow.com/questions/4301759/disable-structure-padding-in-c-without-using-pragma)
