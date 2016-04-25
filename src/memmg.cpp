@@ -72,23 +72,18 @@ MEMMG_TYPE *memmg_reference(char *small_pointer) {
 }
 
 
-class MemmgPointer {
-public:
-    MemmgPointer(MEMMG_TYPE *ptr) {
-        int64_t virtual_address;
-        _pointer = (char *) malloc(MEMMG_WIDTH);
-        virtual_address = memmg_to_virtual(ptr);
-        // do some bitmasking here to apply the virtual_address to the _pointer
-        // array
-    }
+MemmgPointer::MemmgPointer(MEMMG_TYPE *ptr) {
+    int64_t virtual_address;
+    _pointer = (char *) malloc(MEMMG_WIDTH);
+    virtual_address = memmg_to_virtual(ptr);
+    // do some bitmasking here to apply the virtual_address to the _pointer
+    // array
+}
 
-    MEMMG_TYPE &operator* () {
-        return *memmg_reference(_pointer);
-    }
+MEMMG_TYPE &MemmgPointer::operator* () {
+    return *memmg_reference(_pointer);
+}
 
-    MEMMG_TYPE *operator-> () {
-        return memmg_reference(_pointer);
-    }
-private:
-    char[MEMMG_WIDTH] _pointer;
-};
+MEMMG_TYPE *MemmgPointer::operator-> () {
+    return memmg_reference(_pointer);
+}
