@@ -2,7 +2,22 @@
 // Created by Justin on 4/26/16.
 //
 
+#include <cmath>
+#include <stdlib.h>
 #include "mem_allocator.h"
+
+Block::Block(int size) {
+    ptr = malloc(size);
+    // set free mask = 0
+    free_mask = (uint64_t *) calloc(std::ceil(size / FREE_MASK_TYPE_MAX), sizeof(FREE_MASK_TYPE));
+}
+
+Block::~Block() {
+    free();
+}
+
+void Block::free() {
+}
 
 
 //const vector<void *> virtual_memory_blocks;
@@ -39,9 +54,7 @@
 //    return lcm;
 //}
 //
-//int get_size_of_os_pointer(){
-//    return sizeof(void*);
-//}
+
 //
 //
 //void get_new_block(){
@@ -57,6 +70,43 @@
 //    virtual_memory_blocks.push_back (new_block);   // adds new_block to end of vector
 //}
 //
-//void *memmg_alloc() {
-//    // Allocate a space for a struct, returning the hardware address.
-//}
+
+MemoryAllocator::MemoryAllocator(int struct_size) {
+    get_block_size(struct_size);
+}
+
+MemoryAllocator::~MemoryAllocator() {
+    for (auto block : blocks) {
+        block->free();
+    }
+}
+
+void *MemoryAllocator::allocate() {
+}
+
+/**
+ * Gets a number of bytes from OS that will be used a block of nodes
+ * in virtual memory space. Then adds a pointer to that block to the
+ * vector of block pointers virtual_memory_blocks.
+ */
+void MemoryAllocator::getBlock() { }
+
+/**
+ * Gets optimal minimal block size based upon multiples
+ * of struct and pointer sizes in bytes.
+ */
+int MemoryAllocator::get_block_size(int struct_size) {
+    int pointer_size = sizeof(void *);
+    int lcm = (struct_size > pointer_size) ? struct_size : pointer_size;
+
+    do {
+        if (lcm % struct_size == 0 && lcm % pointer_size == 0) {
+            break;
+        }
+        else
+            ++lcm;
+    }
+    while (true);
+
+    return lcm;
+}
