@@ -3,9 +3,8 @@
 
 // Project Specific
 #include "definitions.h"
-#include "compactPointer.h"
 #include "trie.h"
-#include "memmg.h"
+//#include "memmg.h"
 
 using namespace std;
 
@@ -33,7 +32,7 @@ record get_record(ifstream& ifs){
 int main(int argc, char **argv) {
     cout << "Test Smart gitPointer to Trie" << "\n";
 
-    CompactPointer<Trie> prefix = new Trie();
+    Trie *prefix = new Trie();
     cout << "Pointer size: " << sizeof(&prefix) << "\n";;
 
     // creating input stream for handling FASTA file
