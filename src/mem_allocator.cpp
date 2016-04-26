@@ -8,54 +8,17 @@
 
 Block::Block(int size) {
     ptr = malloc(size);
-    // set free mask = 0
+
+    // set free mask
     free_mask = (uint64_t *) calloc(std::ceil(size / FREE_MASK_TYPE_MAX), sizeof(FREE_MASK_TYPE));
 }
 
 Block::~Block() {
-    free();
+    free(ptr);
+    free((void*)free_mask);
 }
 
-void Block::free() {
-}
 
-
-//const vector<void *> virtual_memory_blocks;
-//int free_block_position = 0;
-//
-//int get_block_size(int bytes_in_struct) {
-//    /***Finds lowest common multiple of `bytes_in_struct` and `bytes_from_os`
-//
-//     Parameters
-//     ----------
-//      bytes_in_stuct : int
-//          size of struct
-//      bytes_from_os : int
-//          number of bytes allocated by OS at one time
-//
-//     Returns
-//     -------
-//      lcm : int
-//          lowest common multiple of `bytes_in_struct` and `bytes_from_os`
-//    ***/
-//
-//    int bytes_from_os = get_size_of_os_pointer();
-//    int lcm = (bytes_in_struct > bytes_from_os) ? bytes_in_struct : bytes_from_os;
-//
-//    do {
-//        if (lcm%bytes_in_struct == 0 && lcm%bytes_from_os == 0) {
-//            break;
-//        }
-//        else
-//            ++lcm;
-//    }
-//    while (true);
-//
-//    return lcm;
-//}
-//
-
-//
 //
 //void get_new_block(){
 //    /***
@@ -71,14 +34,13 @@ void Block::free() {
 //}
 //
 
-MemoryAllocator::MemoryAllocator(int struct_size) {
+MemoryAllocator::MemoryAllocator(int size) {
+    struct_size = size;
     get_block_size(struct_size);
 }
 
 MemoryAllocator::~MemoryAllocator() {
-    for (auto block : blocks) {
-        block->free();
-    }
+    blocks.clear();
 }
 
 void *MemoryAllocator::allocate() {
@@ -89,7 +51,9 @@ void *MemoryAllocator::allocate() {
  * in virtual memory space. Then adds a pointer to that block to the
  * vector of block pointers virtual_memory_blocks.
  */
-void MemoryAllocator::getBlock() { }
+void MemoryAllocator::getBlock() {
+    blocks.push_back (new Block(struct_size));   // adds new Block to end of vector
+}
 
 /**
  * Gets optimal minimal block size based upon multiples

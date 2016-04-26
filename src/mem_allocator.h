@@ -18,8 +18,6 @@ public:
 
     ~Block();
 
-    void free();
-
 private:
     void *ptr;
     FREE_MASK_TYPE *free_mask; // depends on block size
@@ -38,7 +36,7 @@ public:
     void *native(int64_t);
 
 private:
-
+    int struct_size;
     std::vector<Block *> blocks;
 
     void getBlock();
