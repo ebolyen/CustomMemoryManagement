@@ -18,6 +18,10 @@ public:
 
     ~Block();
 
+    void *get_free_slot();
+    bool is_full();
+    int get_first_free();
+
 private:
     void *ptr;
     FREE_MASK_TYPE *free_mask; // depends on block size
@@ -37,9 +41,10 @@ public:
 
 private:
     int struct_size;
+    int block_size;
     std::vector<Block *> blocks;
 
-    void getBlock();
+    Block *getBlock();
 
     void freeBlock(int64_t);
 

@@ -18,25 +18,32 @@ Block::~Block() {
     free((void*)free_mask);
 }
 
+int Block::get_first_free() {
+    // TODO bit shift free mask
 
-//
-//void get_new_block(){
-//    /***
-//
-//        Gets a number of bytes from OS that will be used a block of nodes
-//        in virtual memory space. Then adds a pointer to that block to the
-//        vector of block pointers virtual_memory_blocks.
-//
-//    ***/
-//    new_block * = malloc(get_block_size(MEMMG_WIDTH * 4))
-//
-//    virtual_memory_blocks.push_back (new_block);   // adds new_block to end of vector
-//}
-//
+    // TODO return -1 if all 0
+
+    return -1;
+}
+
+void* Block::get_free_slot() {
+    int slot_number = get_first_free();
+
+    if (slot_number == -1){
+        // TODO handle exception
+    }
+
+    return free_mask+slot_number;
+}
+
+bool Block::is_full(){
+    return get_first_free() == -1;
+}
+
 
 MemoryAllocator::MemoryAllocator(int size) {
     struct_size = size;
-    get_block_size(struct_size);
+    block_size = get_block_size(struct_size);
 }
 
 MemoryAllocator::~MemoryAllocator() {
@@ -44,6 +51,11 @@ MemoryAllocator::~MemoryAllocator() {
 }
 
 void *MemoryAllocator::allocate() {
+    if (blocks.size() == 0 || blocks.back()->is_full()) {
+        getBlock();
+    }
+    Block *b = blocks.back();
+    return b->get_free_slot();
 }
 
 /**
@@ -51,8 +63,13 @@ void *MemoryAllocator::allocate() {
  * in virtual memory space. Then adds a pointer to that block to the
  * vector of block pointers virtual_memory_blocks.
  */
-void MemoryAllocator::getBlock() {
-    blocks.push_back (new Block(struct_size));   // adds new Block to end of vector
+Block* MemoryAllocator::getBlock() {
+    Block *b = new Block(block_size);
+    blocks.push_back(b);   // adds new Block to end of vector
+
+    // TODO track free blocks
+
+    return b;
 }
 
 /**
