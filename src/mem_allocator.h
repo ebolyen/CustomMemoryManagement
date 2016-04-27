@@ -14,7 +14,7 @@
 
 class Block {
 public:
-    Block(int size);
+    Block(int block_size);
 
     ~Block();
 
@@ -24,7 +24,11 @@ public:
 
 private:
     void *ptr;
+    int size;
     FREE_MASK_TYPE *free_mask; // depends on block size
+    int get_free_mask_size();
+    bool get_free_mask(int slot_number);
+    void set_free_mask(int slot_number, bool is_full);
 };
 
 class MemoryAllocator {
