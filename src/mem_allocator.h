@@ -8,27 +8,49 @@
 #include <vector>
 #include "definitions.h"
 
+#define FREE_MASK_TYPE uint64_t
+#define FREE_MASK_TYPE_MAX UINT64_MAX
+
+
+class Block {
+public:
+    Block(int size);
+
+    ~Block();
+
+    void *get_free_slot();
+    bool is_full();
+    int get_first_free();
+
+private:
+    void *ptr;
+    FREE_MASK_TYPE *free_mask; // depends on block size
+};
 
 class MemoryAllocator {
 public:
-    MemoryAllocator();
+    MemoryAllocator(int struct_size);
 
     ~MemoryAllocator();
 
-    int64_t allocate();
+    void *allocate();
 
     void free(int64_t);
 
     void *native(int64_t);
 
 private:
-    std::vector<void *> blocks;
+    int struct_size;
+    int block_size;
+    std::vector<Block *> blocks;
 
-    void getBlock();
+    Block *getBlock();
 
     void freeBlock(int64_t);
 
     void clean();
+
+    int get_block_size(int struct_size);
 };
 
 #endif //CUSTOMMEMORYMANAGEMENT_MEM_ALLOCATOR_H
