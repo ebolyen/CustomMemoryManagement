@@ -19,6 +19,9 @@ Block::~Block() {
     free((void *) free_mask);
 }
 
+/**
+ * Iterate through slots to find first empty. If none found, return -1.
+ */
 int Block::get_first_free() {
     for (int i = 0; i < size; i++) {
         if (get_free_mask(i)) {
@@ -30,6 +33,9 @@ int Block::get_first_free() {
     return -1;
 }
 
+/**
+ * Get the first free slot in the block.
+ */
 void *Block::get_free_slot() {
     int slot_number = get_first_free();
 
@@ -40,14 +46,23 @@ void *Block::get_free_slot() {
     return free_mask + slot_number;
 }
 
+/**
+ * Helper function to see if block is full.
+ */
 bool Block::is_full() {
     return get_first_free() == -1;
 }
 
+/**
+ * Helper function to get length of free mask array.
+ */
 int Block::get_free_mask_size() {
     return std::ceil(size / FREE_MASK_TYPE_MAX);
 }
 
+/**
+ * Get the value of the free mask corresponding to slot number.
+ */
 bool Block::get_free_mask(int slot_number){
     int mask_size = get_free_mask_size();
     int mask_part_size = sizeof(FREE_MASK_TYPE);
@@ -56,6 +71,9 @@ bool Block::get_free_mask(int slot_number){
     return (*(free_mask + slot_number / mask_part_size) & (0 << slot_number % mask_part_size));
 }
 
+/**
+ * Set bit of free mask to 1 if is full else 0.
+ */
 void Block::set_free_mask(int slot_number, bool is_full) {
     int mask_size = get_free_mask_size();
     int mask_part_size = sizeof(FREE_MASK_TYPE);
@@ -73,6 +91,7 @@ MemoryAllocator::~MemoryAllocator() {
 }
 
 void *MemoryAllocator::allocate() {
+    // TODO improve so only a single iteration of free mask is needed
     if (blocks.size() == 0 || blocks.back()->is_full()) {
         getBlock();
     }
