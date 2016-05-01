@@ -30,28 +30,67 @@ record get_record(ifstream& ifs){
 
 
 int main(int argc, char **argv) {
-    cout << "Test Smart gitPointer to Trie" << "\n";
-
-    Trie *prefix = new Trie();
-    cout << "Pointer size: " << sizeof(&prefix) << "\n";;
-
-    // creating input stream for handling FASTA file
-    ifstream ifs;
-    // opening input FASTA file
-    ifs.open ("test_in.fasta", ifstream::in);
-
-    // creating record struct and char for end of file probe
-    record this_record;
-    char x;
-
-    // while there is another character in the FASTA file
-    while( ifs.get(x)) {
-        // retrieve one record from FASTA file
-        this_record = get_record(ifs);
-        prefix->add(this_record.sequence);
-        cout << "Prefix Length: " << prefix->get_size() << "\n";
+    // If there is an additional flag
+    if (argc == 2){
+        // If the flag is setting the runtime behavior to using the
+        // custom memory manager
+        if (argv[1] == "-optimized"){
+            bool optimized = true;
+        }
+        else{
+            bool optimized = false;
+        }
     }
 
+    // if the trie is to use the custom memory manager
+    if (optimized){
+        cout << "Test Smart gitPointer to Trie" << "\n";
+
+        Trie *prefix = new Trie();
+        cout << "Pointer size: " << sizeof(&prefix) << "\n";;
+
+        // creating input stream for handling FASTA file
+        ifstream ifs;
+        // opening input FASTA file
+        ifs.open ("test_in.fasta", ifstream::in);
+
+        // creating record struct and char for end of file probe
+        record this_record;
+        char x;
+
+        // while there is another character in the FASTA file
+        while( ifs.get(x)) {
+            // retrieve one record from FASTA file
+            this_record = get_record(ifs);
+            prefix->add(this_record.sequence);
+            cout << "Prefix Length: " << prefix->get_size() << "\n";
+        }
+    }
+
+    // if the trie is NOT to use the custom memory manager
+    if(!optimized){
+        cout << "Test Smart gitPointer to Trie" << "\n";
+
+        Trie *prefix = new Trie();
+        cout << "Pointer size: " << sizeof(&prefix) << "\n";;
+
+        // creating input stream for handling FASTA file
+        ifstream ifs;
+        // opening input FASTA file
+        ifs.open ("test_in.fasta", ifstream::in);
+
+        // creating record struct and char for end of file probe
+        record this_record;
+        char x;
+
+        // while there is another character in the FASTA file
+        while( ifs.get(x)) {
+            // retrieve one record from FASTA file
+            this_record = get_record(ifs);
+            prefix->add(this_record.sequence);
+            cout << "Prefix Length: " << prefix->get_size() << "\n";
+        }
+    }
     ifs.close();
 
     return 0;
