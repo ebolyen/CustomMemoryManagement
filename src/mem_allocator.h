@@ -8,6 +8,7 @@
 class Block {
 public:
     Block(uint64_t addr, int max, int size);
+    ~Block();
 
     bool is_full();
     uint64_t get_next_addr();
@@ -23,6 +24,7 @@ private:
 class MemoryAllocator {
 public:
     MemoryAllocator(int struct_size);
+    ~MemoryAllocator();
 
     uint64_t allocate();
     void *reference(uint64_t virt_ptr);

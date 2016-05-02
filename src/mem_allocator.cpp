@@ -16,6 +16,10 @@ Block::Block(uint64_t addr, int max, int size) {
     memory = malloc(struct_size * max_count);
 }
 
+Block::~Block() {
+    free(memory);
+}
+
 bool Block::is_full() {
     return curr_offset == max_count;
 }
@@ -37,6 +41,18 @@ MemoryAllocator::MemoryAllocator(int size) {
     cout << "Structs per Block " << structs_per_block << endl;
     next_block_addr = 1;
     addBlock();
+}
+
+MemoryAllocator::~MemoryAllocator() {
+    // The current understanding is that calling delete on the vector's
+    // contained block pointers will free the underlying memory to which they
+    // point but, after this, the pointers themselves still exist (although they
+    // have been invalidated). Calling the vectors destructor eliminates the
+    // remaining invalidated block pointers themselves.
+    for(uint64_t i = blocks.size() - 1; i >= 0; i--) {
+        delete(blocks[i]);
+    }
+    blocks.clear();
 }
 
 uint64_t MemoryAllocator::allocate() {
