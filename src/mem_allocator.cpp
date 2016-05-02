@@ -1,115 +1,66 @@
 //
 // Created by Justin on 4/26/16.
 //
-
+#include <iostream>
 #include <cmath>
 #include <stdlib.h>
 #include "mem_allocator.h"
 
-Block::Block(int block_size) {
-    size = block_size;
-    ptr = malloc(size);
+using namespace std;
 
-    // set free mask
-    free_mask = (FREE_MASK_TYPE *) calloc(get_free_mask_size(), sizeof(FREE_MASK_TYPE));
+Block::Block(uint64_t addr, int max, int size) {
+    root_addr = addr;
+    max_count = max;
+    struct_size = size;
+    curr_offset = 0;
+    memory = malloc(struct_size * max_count);
 }
 
-Block::~Block() {
-    free(ptr);
-    free((void *) free_mask);
-}
-
-/**
- * Iterate through slots to find first empty. If none found, return -1.
- */
-int Block::get_first_free() {
-    for (int i = 0; i < size; i++) {
-        if (get_free_mask(i)) {
-            return i;
-        }
-    }
-
-    // return -1 if all 1
-    return -1;
-}
-
-/**
- * Get the first free slot in the block.
- */
-void *Block::get_free_slot() {
-    int slot_number = get_first_free();
-
-    if (slot_number == -1) {
-        // TODO handle exception
-    }
-
-    return free_mask + slot_number;
-}
-
-/**
- * Helper function to see if block is full.
- */
 bool Block::is_full() {
-    return get_first_free() == -1;
+    return curr_offset == max_count;
 }
 
-/**
- * Helper function to get length of free mask array.
- */
-int Block::get_free_mask_size() {
-    return std::ceil(size / FREE_MASK_TYPE_MAX);
+uint64_t Block::get_next_addr() {
+    if (is_full()) return 0;
+    return root_addr + curr_offset++;
 }
 
-/**
- * Get the value of the free mask corresponding to slot number.
- */
-bool Block::get_free_mask(int slot_number){
-    int mask_size = get_free_mask_size();
-    int mask_part_size = sizeof(FREE_MASK_TYPE);
-
-    // TODO Test this
-    return (*(free_mask + slot_number / mask_part_size) & (0 << slot_number % mask_part_size));
-}
-
-/**
- * Set bit of free mask to 1 if is full else 0.
- */
-void Block::set_free_mask(int slot_number, bool is_full) {
-    int mask_size = get_free_mask_size();
-    int mask_part_size = sizeof(FREE_MASK_TYPE);
-    // TODO
+void *Block::get_reference_of(int offset) {
+    return memory + (offset * struct_size);
 }
 
 
 MemoryAllocator::MemoryAllocator(int size) {
     struct_size = size;
-    block_size = get_block_size(struct_size);
+    structs_per_block = get_block_size(struct_size) / size;
+    cout << "Struct Size " << struct_size << endl;
+    cout << "Structs per Block " << structs_per_block << endl;
+    next_block_addr = 1;
+    addBlock();
 }
 
-MemoryAllocator::~MemoryAllocator() {
-    blocks.clear();
-}
-
-void *MemoryAllocator::allocate() {
-    // TODO improve so only a single iteration of free mask is needed
-    if (blocks.size() == 0 || blocks.back()->is_full()) {
-        getBlock();
-    }
+uint64_t MemoryAllocator::allocate() {
     Block *b = blocks.back();
-    return b->get_free_slot();
+    if (b->is_full()) {
+        b = addBlock();
+    }
+    return b->get_next_addr();
 }
 
-/**
- * Gets a number of bytes from OS that will be used a block of nodes
- * in virtual memory space. Then adds a pointer to that block to the
- * vector of block pointers virtual_memory_blocks.
- */
-Block *MemoryAllocator::getBlock() {
-    Block *b = new Block(block_size);
-    blocks.push_back(b);   // adds new Block to end of vector
+void *MemoryAllocator::reference(uint64_t virt_ptr) {
+    if (!virt_ptr)
+        return NULL;
+    uint64_t block_id = (virt_ptr - 1) / structs_per_block;
+    uint64_t struct_id = virt_ptr % structs_per_block;
+    return blocks.at(block_id)->get_reference_of(struct_id);
+}
 
-    // TODO track free blocks
+Block *MemoryAllocator::addBlock() {
+    uint64_t root_addr = next_block_addr;
+    next_block_addr += structs_per_block;
 
+    Block *b = new Block(root_addr, structs_per_block, struct_size);
+    blocks.push_back(b);
     return b;
 }
 
@@ -119,6 +70,7 @@ Block *MemoryAllocator::getBlock() {
  */
 int MemoryAllocator::get_block_size(int struct_size) {
     int pointer_size = sizeof(void *);
+    struct_size *= 1024;
     int lcm = (struct_size > pointer_size) ? struct_size : pointer_size;
 
     do {
@@ -127,8 +79,7 @@ int MemoryAllocator::get_block_size(int struct_size) {
         }
         else
             ++lcm;
-    }
-    while (true);
+    } while (true);
 
     return lcm;
 }
