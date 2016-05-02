@@ -60,6 +60,7 @@ int main(int argc, char **argv) {
         while( ifs.get(x)) {
             // retrieve one record from FASTA file
             this_record = get_record(ifs);
+            cout << this_record.header << endl;
             prefix->add(this_record.sequence);
             cout << "Prefix Length: " << prefix->get_size() << "\n";
         }
