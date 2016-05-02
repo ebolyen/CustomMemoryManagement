@@ -43,14 +43,31 @@ int main(int argc, char **argv) {
     }
     // creating input stream for handling FASTA file
     ifstream ifs;
+    // opening input FASTA file
+    ifs.open (argv[1], ifstream::in);
+
     // if the trie is to use the custom memory manager
     if (optimized){
         memmg = new MemoryAllocator(sizeof(MEMMG_TYPE));
 
         OptTrie *prefix = new OptTrie();
 
-        // opening input FASTA file
-        ifs.open (argv[1], ifstream::in);
+        // creating record struct and char for end of file probe
+        record this_record;
+        char x;
+
+        // while there is another character in the FASTA file
+        while( ifs.get(x)) {
+            // retrieve one record from FASTA file
+            this_record = get_record(ifs);
+            prefix->add(this_record.sequence);
+            cout << "Prefix Length: " << prefix->get_size() << "\n";
+        }
+    }
+
+    // if the trie is NOT to use the custom memory manager
+    if(!optimized){
+        Trie *prefix = new Trie();
 
         // creating record struct and char for end of file probe
         record this_record;
@@ -61,28 +78,6 @@ int main(int argc, char **argv) {
             // retrieve one record from FASTA file
             this_record = get_record(ifs);
             cout << this_record.header << endl;
-            prefix->add(this_record.sequence);
-            cout << "Prefix Length: " << prefix->get_size() << "\n";
-        }
-    }
-
-    // if the trie is NOT to use the custom memory manager
-    if(!optimized){
-        Trie *prefix = new Trie();
-
-        // creating input stream for handling FASTA file
-        ifstream ifs;
-        // opening input FASTA file
-        ifs.open ("src/test_in.fasta", ifstream::in);
-
-        // creating record struct and char for end of file probe
-        record this_record;
-        char x;
-
-        // while there is another character in the FASTA file
-        while( ifs.get(x)) {
-            // retrieve one record from FASTA file
-            this_record = get_record(ifs);
             prefix->add(this_record.sequence);
             cout << "Prefix Length: " << prefix->get_size() << endl;
         }
