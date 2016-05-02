@@ -34,10 +34,10 @@ int main(int argc, char **argv) {
     cout << argc << endl;
     // If there is an additional flag
     bool optimized = false;
-    if (argc == 2){
+    if (argc == 3){
         // If the flag is setting the runtime behavior to using the
         // custom memory manager
-        if (*argv[1] == '!'){
+        if (*argv[2] == '!'){
             optimized = true;
         }
     }
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         OptTrie *prefix = new OptTrie();
 
         // opening input FASTA file
-        ifs.open ("src/test_in.fasta", ifstream::in);
+        ifs.open (argv[1], ifstream::in);
 
         // creating record struct and char for end of file probe
         record this_record;

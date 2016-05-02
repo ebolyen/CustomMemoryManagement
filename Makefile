@@ -5,7 +5,7 @@ BUILDDIR = build
 SRCS := $(wildcard src/*.cpp)
 OBJS := $(SRCS:.cpp=.o)
 
-TARGET := bin/thing
+TARGET := bin/cmm
 
 all: $(TARGET)
 
