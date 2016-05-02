@@ -4,6 +4,7 @@
 // Project Specific
 #include "definitions.h"
 #include "trie.h"
+#include "optimized_trie.h"
 //#include "memmg.h"
 
 using namespace std;
@@ -28,31 +29,28 @@ record get_record(ifstream& ifs){
     return new_record;
 }
 
-
+MemoryAllocator *memmg;
 int main(int argc, char **argv) {
+    cout << argc << endl;
     // If there is an additional flag
+    bool optimized = false;
     if (argc == 2){
         // If the flag is setting the runtime behavior to using the
         // custom memory manager
-        if (argv[1] == "-optimized"){
-            bool optimized = true;
-        }
-        else{
-            bool optimized = false;
+        if (*argv[1] == '!'){
+            optimized = true;
         }
     }
-
+    // creating input stream for handling FASTA file
+    ifstream ifs;
     // if the trie is to use the custom memory manager
     if (optimized){
-        cout << "Test Smart gitPointer to Trie" << "\n";
+        memmg = new MemoryAllocator(sizeof(MEMMG_TYPE));
 
-        Trie *prefix = new Trie();
-        cout << "Pointer size: " << sizeof(&prefix) << "\n";;
+        OptTrie *prefix = new OptTrie();
 
-        // creating input stream for handling FASTA file
-        ifstream ifs;
         // opening input FASTA file
-        ifs.open ("test_in.fasta", ifstream::in);
+        ifs.open ("src/test_in.fasta", ifstream::in);
 
         // creating record struct and char for end of file probe
         record this_record;
@@ -69,15 +67,12 @@ int main(int argc, char **argv) {
 
     // if the trie is NOT to use the custom memory manager
     if(!optimized){
-        cout << "Test Smart gitPointer to Trie" << "\n";
-
         Trie *prefix = new Trie();
-        cout << "Pointer size: " << sizeof(&prefix) << "\n";;
 
         // creating input stream for handling FASTA file
         ifstream ifs;
         // opening input FASTA file
-        ifs.open ("test_in.fasta", ifstream::in);
+        ifs.open ("src/test_in.fasta", ifstream::in);
 
         // creating record struct and char for end of file probe
         record this_record;
@@ -88,7 +83,7 @@ int main(int argc, char **argv) {
             // retrieve one record from FASTA file
             this_record = get_record(ifs);
             prefix->add(this_record.sequence);
-            cout << "Prefix Length: " << prefix->get_size() << "\n";
+            cout << "Prefix Length: " << prefix->get_size() << endl;
         }
     }
     ifs.close();

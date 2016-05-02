@@ -1,72 +1,75 @@
 //
 // Created by Justin on 3/22/16.
 //
-
+#include "definitions.h"
+#include "memmg.h"
 #include "optimized_trie.h"
 
 using namespace std;
 
-Node::Node() {
+OptNode::OptNode() {
     _value = ' ';
 }
 
-Node::~Node() {
+OptNode::~OptNode() {
     for (int i = 0; i < _children.size(); i++) {
-        delete _children.at(i);
+        // delete _children.at(i);
     }
     _children.clear();
 }
 
-Node *Node::get_child(char val) {
+OptNode *OptNode::get_child(char val) {
     for (int i = 0; i < _children.size(); i++) {
-        Node *temp = _children.at(i);
+        memmg_ptr temp = _children.at(i);
         if (temp->get_value() == val) {
-            return temp;
+            return &*temp;
         }
     }
 
     return NULL;
 }
 
-char Node::get_value() {
+char OptNode::get_value() {
     return _value;
 }
 
-void Node::set_value(char val) {
+void OptNode::set_value(char val) {
     _value = val;
 }
 
-void Node::append_child(Node *child) {
+void OptNode::append_child(memmg_ptr child) {
     _children.push_back(child);
 }
 
 
-Trie::Trie() {
-    _root = new Node();
+OptTrie::OptTrie() {
+    _root = memmg_ptr(memmg_alloc());
+    new (&*_root) OptNode();
     _size = 0;
 }
 
-Trie::~Trie(void) {
-    delete _root;
+OptTrie::~OptTrie(void) {
+    // delete _root;
 }
 
-void Trie::add(string word) {
-    Node *current = _root;
+void OptTrie::add(string word) {
+    OptNode *current = &*_root;
 
     if (word.length() == 0) {
         return;
     }
 
     for (int i = 0; i < word.length(); i++) {
-        Node *child = current->get_child(word[i]);
+        OptNode *child = current->get_child(word[i]);
 
         if (child == NULL) {
-            Node *temp = new Node();
+            memmg_ptr temp = memmg_ptr(memmg_alloc());
+            new (&*temp) OptNode();
             _size++;
             temp->set_value(word[i]);
 
             current->append_child(temp);
-            current = temp;
+            current = &*temp;
 
         } else {
             current = child;
@@ -74,11 +77,11 @@ void Trie::add(string word) {
     }
 }
 
-bool Trie::search(string word) {
-    Node *current = _root;
+bool OptTrie::search(string word) {
+    OptNode *current = &*_root;
 
     for (int i = 0; i < word.length(); i++) {
-        Node *child = current->get_child(word[i]);
+        OptNode *child = current->get_child(word[i]);
 
         if (child == NULL) {
             return false;
@@ -90,12 +93,12 @@ bool Trie::search(string word) {
     return true;
 }
 
-int Trie::get_size() {
+int OptTrie::get_size() {
     return _size;
 };
 
-void Trie::clear() {
-    delete _root;
-    _root = new Node();
+void OptTrie::clear() {
+    // delete _root;
+    _root = memmg_ptr(memmg_alloc());
     _size = 0;
 }

@@ -2,48 +2,48 @@
 // Created by Justin on 3/22/16.
 //
 
-#ifndef CUSTOMMEMORYMANAGEMENT_TRIE
-#define CUSTOMMEMORYMANAGEMENT_TRIE
+#ifndef OPTIMIZED_TRIE_H
+#define OPTIMIZED_TRIE_H
 
 #include <vector>
 #include <string>
+#include "memmg.h"
 
-
-class Node {
+class OptNode {
 public:
-    Node();
+    OptNode();
 
-    ~Node();
+    ~OptNode();
 
-    Node *get_child(char val);
+    OptNode *get_child(char val);
 
     char get_value();
 
     void set_value(char val);
 
-    void append_child(Node *child);
+    void append_child(memmg_ptr child);
 
 private:
     char _value;
-    std::vector<Node *> _children;
+    std::vector<memmg_ptr> _children;
 };
 
-class Trie {
+class OptTrie {
 public:
     void add(std::string word);
 
     bool search(std::string word);
 
-    Trie();
+    OptTrie();
 
-    ~Trie(void);
+    ~OptTrie(void);
 
     int get_size();
 
     void clear();
 
 private:
-    Node *_root;
+    memmg_ptr _root;
     int _size;
 };
 

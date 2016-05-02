@@ -6,9 +6,15 @@
 #define CUSTOMMEMORYMANAGEMENT_DEFINITIONS_H
 
 // forward declaration
-class Node;
+class OptNode;
+#define MEMMG_TYPE OptNode
 
+#ifndef MEMMG_WIDTH
 #define MEMMG_WIDTH 5
-#define MEMMG_TYPE Node
+#endif
+
+// This is aweful
+#include "mem_allocator.h"
+extern MemoryAllocator *memmg;
 
 #endif //CUSTOMMEMORYMANAGEMENT_DEFINITIONS_H

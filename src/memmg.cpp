@@ -3,7 +3,7 @@
 #include <string>
 #include <stdlib.h>
 
-#include "../proto/shared.h"
+#include "definitions.h"
 #include "mem_allocator.h"
 #include "memmg.h"
 

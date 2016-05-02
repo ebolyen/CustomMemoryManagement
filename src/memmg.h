@@ -1,3 +1,6 @@
+#ifndef MEMMG_H
+#define MEMMG_H
+
 #include <stdint.h>
 
 uint64_t memmg_alloc();
@@ -11,3 +14,4 @@ public:
 private:
     unsigned char _pointer[MEMMG_WIDTH];
 };
+#endif
