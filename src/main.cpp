@@ -63,6 +63,8 @@ int main(int argc, char **argv) {
             prefix->add(this_record.sequence);
             // cout << "Prefix Length: " << prefix->get_size() << "\n";
         }
+        cout << "Trie Assembly Complete" << endl;
+
     }
 
     // if the trie is NOT to use the custom memory manager
@@ -80,6 +82,7 @@ int main(int argc, char **argv) {
             prefix->add(this_record.sequence);
             // cout << "Prefix Length: " << prefix->get_size() << endl;
         }
+        cout << "Trie Assembly Complete" << endl;
     }
     ifs.close();
 

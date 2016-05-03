@@ -68,13 +68,21 @@ void *MemoryAllocator::reference(uint64_t virt_ptr) {
         return NULL;
     uint64_t block_id = (virt_ptr - 1) / structs_per_block;
     uint64_t struct_id = virt_ptr % structs_per_block;
-    return blocks.at(block_id)->get_reference_of(struct_id);
+    try{
+        return blocks.at(block_id)->get_reference_of(struct_id);
+
+    }
+    catch(...){
+        cout << virt_ptr << endl;
+        cout << block_id << endl;
+        cout << struct_id << endl;
+        throw "Reference died";
+    }
 }
 
 Block *MemoryAllocator::addBlock() {
     uint64_t root_addr = next_block_addr;
     next_block_addr += structs_per_block;
-
     Block *b = new Block(root_addr, structs_per_block, struct_size);
     blocks.push_back(b);
     return b;
